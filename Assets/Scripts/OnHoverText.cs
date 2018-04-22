@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OnHoverText : MonoBehaviour
 {
     Text text;
     [SerializeField] Text dont;
-    public bool canClose = false;
     int suicidecount = 0;
 
     private void Awake()
@@ -18,38 +18,36 @@ public class OnHoverText : MonoBehaviour
     public void OnClick()
     {
         suicidecount++;
-        text.color = new Color(1, 1f- (float)suicidecount / 5, 1f- (float)suicidecount / 5);
+        text.color = new Color(1, 1f- (float)suicidecount / 3, 1f- (float)suicidecount / 3);
+
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<LifeData>().stop)
+            suicidecount = 4;
 
         switch(suicidecount)
         {
             case 1:
-                dont.text = "Please Don't";
-                dont.color = Color.white;
+                dont.text = "Are you sure?";
+                dont.color = Color.red;
                 break;
             case 2:
-                dont.text = "You Can Make It";
-                dont.color = Color.white;
+                dont.text = "Think again, seriously.";
+                dont.color = Color.red;
                 break;
             case 3:
-                dont.text = "You're Not Alone";
-                dont.color = Color.white;
-                break;
-            case 4:
-                dont.text = "Still Not Too Late";
-                dont.color = Color.white;
+                dont.text = "Wish you having a long journey.";
+                dont.color = Color.red;
                 break;
         }
 
-        if (suicidecount > 5)
+        if (suicidecount > 3)
         {
-            Application.Quit();
-            canClose = true;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>().BGM.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
     }
 
     private void OnApplicationQuit()
     {
-        if (!canClose)
             Application.CancelQuit();
     }
 

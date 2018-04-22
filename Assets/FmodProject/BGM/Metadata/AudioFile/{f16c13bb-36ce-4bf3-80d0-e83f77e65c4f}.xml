@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{f16c13bb-36ce-4bf3-80d0-e83f77e65c4f}">
+        <property name="assetPath">
+            <value>percussion Bell.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>24</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{986127da-f2fd-42f3-976e-9610503af927}</destination>
+        </relationship>
+    </object>
+</objects>

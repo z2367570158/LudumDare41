@@ -12,24 +12,30 @@ public class PlayerControl : MonoBehaviour {
     };
 
     [SerializeField] public MoveType movetype = MoveType.CameraForward;
-    [SerializeField] private Camera cam;
+    [SerializeField] public Camera cam;
 
     public float speed = 0f;
     public float jumpSpeed = 0f;
     public float gravityFactor = 1f;
-
+    public float maxSpeed = 30f;
     private CharacterController character;
     private Animator animator;
 
     private bool jumpInput;
-    private bool jumping;
-    private bool previouslyGrounded;
+    public bool jumping;
+    public bool previouslyGrounded;
     private CollisionFlags collisionFlags;
     private Vector3 move = Vector3.zero;
+
+
+    public FMOD.Studio.EventInstance BGM;
 
     void Start () {
         animator = GetComponent<Animator>();
         character = GetComponent<CharacterController>();
+
+        BGM = FMODUnity.RuntimeManager.CreateInstance("event:/BGM");
+        BGM.start();
     }
 
     private void Update()
@@ -63,10 +69,6 @@ public class PlayerControl : MonoBehaviour {
             dir = Vector3.zero;
         }
 
-        RaycastHit hitInfo;
-        Physics.SphereCast(transform.position, character.radius/3f, Vector3.down, out hitInfo,
-                           character.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-        dir = Vector3.ProjectOnPlane(dir, hitInfo.normal);
         dir.y = 0;
 
         if (dir.magnitude > 1)
@@ -80,7 +82,7 @@ public class PlayerControl : MonoBehaviour {
             move.y = Physics.gravity.y;
 
             if (dir.magnitude != 0)
-                transform.rotation = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir),0.1f);
 
             if (jumpInput && !jumping)
             {
@@ -94,9 +96,11 @@ public class PlayerControl : MonoBehaviour {
         }
 
         collisionFlags = character.Move(move * Time.fixedDeltaTime);
-        Debug.Log(dir.magnitude);
 
-        animator.SetFloat("Speed", dir.magnitude*speed/20f);
+
+
+        BGM.setParameterValue("Speed", speed);
+        animator.SetFloat("Speed", dir.magnitude*speed/maxSpeed);
         animator.SetBool("Jumping", jumping);
         animator.SetBool("isGround", character.isGrounded);
 

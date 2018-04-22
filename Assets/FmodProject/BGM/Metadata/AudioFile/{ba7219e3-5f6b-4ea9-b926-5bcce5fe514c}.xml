@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{ba7219e3-5f6b-4ea9-b926-5bcce5fe514c}">
+        <property name="assetPath">
+            <value>violin solo.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>24</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{986127da-f2fd-42f3-976e-9610503af927}</destination>
+        </relationship>
+    </object>
+</objects>
